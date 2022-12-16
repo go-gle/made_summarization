@@ -5,8 +5,8 @@ import numpy as np
 
 from transformers import MBartTokenizer, MBartForConditionalGeneration
 
-from src.pointer_gen.utils import preporocess_text, PointerDataPoint, decode
-from src.pointer_gen.beam_decode import beam_decode
+from pointer_gen.utils import preporocess_text, PointerDataPoint, decode
+from pointer_gen.beam_decode import beam_decode
 
 class Predictor:
     def __init__(self,

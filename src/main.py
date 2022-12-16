@@ -1,4 +1,4 @@
-from src.predictors import PGenPredictor, MBartPredictor
+from predictors import PGenPredictor, MBartPredictor
 import gradio as gr
 
 

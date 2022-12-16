@@ -2,7 +2,7 @@ import torch
 from queue import PriorityQueue
 from tqdm.notebook import tqdm
 
-from src.pointer_gen.utils import SOS, EOS,OOV
+from pointer_gen.utils import SOS, EOS,OOV
 
 
 class BeamSearchNode(object):
