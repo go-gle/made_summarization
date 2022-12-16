@@ -11,8 +11,8 @@ def apply_models(text):
 if __name__ == '__main__':
     print('Loading Pointer Gen')
     pg = PGenPredictor(
-    model_path='/Users/ruagcg2/Downloads/pointer_gazeta_voc33_rouge30.pth',
-    vocab_path='/Users/ruagcg2/Downloads/gazeta_voc.pth')
+    model_path='./pointer_gazeta.pth',
+    vocab_path='./gazeta_voc.pth')
     print('Loading MBART')
     mbart = MBartPredictor()
    
