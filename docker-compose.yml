@@ -4,9 +4,9 @@ services:
   summarizer:
     build: .
     ports:
-      - 7860:7860
+      - 8889:8889
     volumes:
-      - /data:code/data
+      - /data:/code/data
     deploy:
       resources:
         reservations:
