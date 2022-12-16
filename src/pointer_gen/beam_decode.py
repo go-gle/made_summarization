@@ -2,6 +2,8 @@ import torch
 from queue import PriorityQueue
 from tqdm.notebook import tqdm
 
+from src.pointer_gen.utils import SOS, EOS,OOV
+
 
 class BeamSearchNode(object):
     def __init__(self, prev_node, s_t, c_t, y_t, cov_t, logprob, length):
@@ -29,7 +31,7 @@ class BeamSearchNode(object):
         return self.y_t < other.y_t
 
 
-def beam_decode(model, max_len, beam_width, src, src_mask, src_ext, extra_zeros, device, SOS, EOS, vocab):
+def beam_decode(model, max_len, beam_width, src, src_mask, src_ext, extra_zeros, device, vocab):
     batch_size = src.shape[0]
     decoded_output = []
     
@@ -43,13 +45,13 @@ def beam_decode(model, max_len, beam_width, src, src_mask, src_ext, extra_zeros,
         cov_t = torch.zeros((1, src.shape[-1]), requires_grad=True).to(device)
         
         cur_node = BeamSearchNode(prev_node=None,
-                              s_t=s_t,
-                              c_t=c_t,
-                              y_t=y_t,
-                              cov_t=cov_t,
-                              logprob=0,
-                              length=1
-                             )
+                                  s_t=s_t,
+                                  c_t=c_t,
+                                  y_t=y_t,
+                                  cov_t=cov_t,
+                                  logprob=0,
+                                  length=1
+                                 )
         nodes = PriorityQueue()
         nodes.put((-cur_node.get_logprob_score(), cur_node))
 
@@ -71,7 +73,7 @@ def beam_decode(model, max_len, beam_width, src, src_mask, src_ext, extra_zeros,
                     continue
 
                 y_t = y_t if y_t < len(vocab) else torch.LongTensor([vocab[OOV]]).to(device)
-                # print(y_t, y_t.shape)
+
 
                 dist, s_t,  c_t, attn_dist, p_gen, cov_t = model.decoder(y_t, s_t,
                                                                          encoder_outputs,
@@ -84,8 +86,6 @@ def beam_decode(model, max_len, beam_width, src, src_mask, src_ext, extra_zeros,
                                                                         )
                 log_prob = torch.log_softmax(dist, dim=-1)
                 log_prob, indexes = torch.topk(log_prob, beam_width)
-                # print(log_prob)
-                # print(indexes)
                 for k in range(beam_width):
                     next_nodes.append(BeamSearchNode(prev_node=cur_node,
                                                     s_t=s_t,
@@ -96,8 +96,6 @@ def beam_decode(model, max_len, beam_width, src, src_mask, src_ext, extra_zeros,
                                                     length=cur_node.length + 1,
                                                    ))
 
-            # print(f'next nodes {next_nodes}')
-            # print(f'q size {nodes.qsize()}')
             for n in next_nodes:
                 nodes.put((-n.get_logprob_score(), n))
         best_decoding = []

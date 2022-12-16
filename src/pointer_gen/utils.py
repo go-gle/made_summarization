@@ -1,8 +1,7 @@
 from collections import Counter
 from tqdm.notebook import tqdm
 from torch.utils.data import Dataset
-from nltk.tokenize import sent_tokenize, word_tokenize
-
+from nltk.tokenize import word_tokenize
 
 
 SOS = '<SOS>'
