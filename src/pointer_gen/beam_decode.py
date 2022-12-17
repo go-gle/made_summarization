@@ -1,6 +1,6 @@
 import torch
 from queue import PriorityQueue
-from tqdm.notebook import tqdm
+
 
 from pointer_gen.utils import SOS, EOS,OOV
 
@@ -37,7 +37,7 @@ def beam_decode(model, max_len, beam_width, src, src_mask, src_ext, extra_zeros,
     
     encoder_outputs, encoder_feature, s_t = model.encoder(src)
     
-    for batch_ind in tqdm(range(batch_size)):
+    for batch_ind in range(batch_size):
         # Create input for 1st decoding step
         y_t = torch.LongTensor([vocab[SOS]]).to(device)
         term_nodes = []
@@ -55,7 +55,7 @@ def beam_decode(model, max_len, beam_width, src, src_mask, src_ext, extra_zeros,
         nodes = PriorityQueue()
         nodes.put((-cur_node.get_logprob_score(), cur_node))
 
-        for i in tqdm(range(max_len)):
+        for i in range(max_len):
             next_nodes = []
             
             for j in range(beam_width):
