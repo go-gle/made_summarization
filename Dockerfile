@@ -5,4 +5,4 @@ COPY requirements.txt /code/
 COPY src/ /code/
 RUN pip3 install -r requirements.txt
 
-CMD /bin/bash
+CMD python3 main.py
