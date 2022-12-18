@@ -16,7 +16,7 @@ class Predictor:
                  device:str = 'cpu',
                 ):
         self.device = device
-        self.vocab = torch.load(vocab_path)
+        self.vocab = torch.load(vocab_path, map_location=torch.device('cpu'))
         self.model = torch.load(model_path,
                            map_location=torch.device('cpu')).to(self.device)
         
@@ -93,7 +93,7 @@ class ExtractionPGenPredictor(Predictor):
         super().__init__(model_path=pg_model_path,
                          vocab_path=pg_vocab_path,
                          device=device)
-        self.ext_model = torch.load(ext_model_path).to(self.device)
+        self.ext_model = torch.load(ext_model_path, map_location=torch.device('cpu')).to(self.device)
         self.threshold = threshold
 
         

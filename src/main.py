@@ -26,10 +26,10 @@ if __name__ == '__main__':
     print('Loading MBART')
     mbart = MBartPredictor(device=device)
     print('Loading Extractor')
-    botup = ExtractorPGenPredictor(
+    botup = ExtractionPGenPredictor(
         ext_model_path=EXTR_MODEL_PATH,
         pg_model_path=PG_MODEL_PATH,
-        pg_vocab_path=EXTR_MODEL_PATH,
+        pg_vocab_path=PG_VOCAB_PATH,
         device=device,
         threshold=0.5)
    
