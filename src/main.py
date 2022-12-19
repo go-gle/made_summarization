@@ -2,9 +2,9 @@ from predictors import PGenPredictor, MBartPredictor, ExtractionPGenPredictor
 
 import gradio as gr
 import torch
+import nltk
 
-
-PG_MODEL_PATH = './pointer_gazeta.pth'
+PG_MODEL_PATH = './pointer_gazeta_v2.pth'
 PG_VOCAB_PATH = './gazeta_voc.pth'
 EXTR_MODEL_PATH = './extractor.pth'
 
@@ -17,6 +17,7 @@ def apply_models(text):
 
 if __name__ == '__main__':
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    nltk.download('punkt')
     print(f'Device is {device}')
     print('Loading Pointer Gen')
     pg = PGenPredictor(
@@ -31,7 +32,7 @@ if __name__ == '__main__':
         pg_model_path=PG_MODEL_PATH,
         pg_vocab_path=PG_VOCAB_PATH,
         device=device,
-        threshold=0.5)
+        threshold=0.01)
    
     with gr.Blocks() as demo:
         btn = gr.Button("Summarize")
